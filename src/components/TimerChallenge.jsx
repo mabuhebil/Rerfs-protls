@@ -1,19 +1,24 @@
 import { useState , useRef } from "react"
-import ResultModal from "./Ruslt-Modal"
+import RusltModal from "./Ruslt-Modal"
 
 export default function TimerChallenge({titile , targetTime}){
 
     const Timer = useRef()
+    const dialog = useRef()
 
     const [timerStarted , setTimerStarted]=useState(false)
-    const [timerExpired , settimerExpired]=useState(false)
+    const [timerExpired , seTimerExpired]=useState(false)
 
-    function handelStart(){
-    Timer.current = setTimeout( () => {
-            settimerExpired(true)
-        },targetTime * 1000)
+ 
+    function handelStart() {
+        Timer.current = setTimeout(() => {
+            seTimerExpired(true);
+            dialog.current.open();
+        }, targetTime * 1000);
         setTimerStarted(true)
     }
+
+    
 
     function handelStop(){
         clearTimeout(Timer.current)
@@ -21,9 +26,9 @@ export default function TimerChallenge({titile , targetTime}){
 
     return(
         <>
-        {timerExpired && <ResultModal targetTime={targetTime} result='You Lost' />}
+         {<RusltModal ref={dialog} targetTime={targetTime} result='You Lost' />}
         <section className="challenge">
-            {timerExpired && <p>You lost!</p>}
+            <h2>{titile}</h2>
             <p className="challenge-time">
                 {targetTime} Second{targetTime > 1 ? 's' :''}
             </p>
@@ -32,6 +37,7 @@ export default function TimerChallenge({titile , targetTime}){
                    {timerStarted? 'Stop' : 'Start'} Challenge
                 </button>
             </p>
+           
             <p className={timerStarted?'active' : undefined}>
                 {timerStarted ? 'Time Is Running...' : 'Timer in Active'}
             </p>
