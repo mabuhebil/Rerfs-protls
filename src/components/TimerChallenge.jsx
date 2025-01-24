@@ -11,7 +11,6 @@ export default function TimerChallenge({titile , targetTime}){
  
    if(timeRemaining <=0){
     clearInterval(Timer.current)
-    setTimeRemaining(targetTime*1000)
     dialog.current.open();
    }
 
@@ -21,7 +20,9 @@ export default function TimerChallenge({titile , targetTime}){
         }, 10);
     }
 
-    
+    function handelReset(){
+        setTimeRemaining(targetTime*1000)
+    }
 
     function handelStop(){
         dialog.current.open();
@@ -30,7 +31,12 @@ export default function TimerChallenge({titile , targetTime}){
 
     return(
         <>
-         {<RusltModal ref={dialog} targetTime={targetTime} result='You Lost' />}
+         <RusltModal
+          ref={dialog}
+          targetTime={targetTime} 
+          timeRemaining={timeRemaining} 
+          onReset={handelReset}
+          />
         <section className="challenge">
             <h2>{titile}</h2>
             <p className="challenge-time">
